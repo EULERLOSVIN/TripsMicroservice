@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using TripsMicroservice.Features.Commands;
 
 namespace TripsMicroservice.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TripsController : ControllerBase
     {
         private readonly IMediator _mediator;
