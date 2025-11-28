@@ -1,0 +1,39 @@
+name: Pipeline CI/CD Completo
+
+on: [push]
+
+jobs:
+  probar-codigo:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        # ACTUALIZACIÓN: Versión 9.0
+        dotnet-version: 9.0.x
+    - name: Ejecutar Tests
+      run: dotnet test 
+
+  construir-y-subir:
+    needs: probar-codigo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bajar código
+        uses: actions/checkout@v3
+      
+      - name: Login en Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME_TRIPS }}
+          password: ${{ secrets.DOCKER_PASSWORD_TRIPS }}
+          
+      - name: Construir y Subir Imagen
+        uses: docker/build-push-action@v4
+        with:
+          # Contexto: RAÍZ
+          context: .
+          # Archivo: Dockerfile actualizado a 9.0
+          file: ./TripsMicroservice/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME_TRIPS }}/tripsmicroservice:latest
