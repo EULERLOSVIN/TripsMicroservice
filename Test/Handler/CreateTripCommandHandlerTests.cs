@@ -1,10 +1,8 @@
-using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TripsMicroservice.Data;
 using TripsMicroservice.Features.Commands;
-using Xunit;
 
-namespace TripsMicroservice.Tests.Handlers
+namespace Test.Handler
 {
     public class CreateTripCommandHandlerTests
     {
@@ -67,4 +65,5 @@ namespace TripsMicroservice.Tests.Handlers
                 .WithMessage("El ID del pasajero no es válido.");
         }
     }
+
 }

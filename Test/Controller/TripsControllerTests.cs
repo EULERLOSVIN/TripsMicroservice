@@ -1,12 +1,9 @@
-using FluentAssertions;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
 using Moq;
 using TripsMicroservice.Controllers;
 using TripsMicroservice.Features.Commands;
-using Xunit;
 
-namespace TripsMicroservice.Tests.Controllers
+namespace Test.Controller
 {
     public class TripsControllerTests
     {
@@ -72,4 +69,5 @@ namespace TripsMicroservice.Tests.Controllers
             badRequestResult.Value.ToString().Should().Contain(errorMessage);
         }
     }
+
 }
