@@ -7,7 +7,7 @@ namespace TripsMicroservice.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class TripsController : ControllerBase
     {
         private readonly IMediator _mediator;
