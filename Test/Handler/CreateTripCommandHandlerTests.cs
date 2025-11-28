@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TripsMicroservice.Data;
 using TripsMicroservice.Features.Commands;
+using FluentAssertions;
 
 namespace Test.Handler
 {
@@ -28,10 +29,10 @@ namespace Test.Handler
                 PassengerId = 1,
                 OriginAddress = "Origin",
                 DestinationAddress = "Destination",
-                OriginLat = 10.0,
-                OriginLng = 20.0,
-                DestLat = 30.0,
-                DestLng = 40.0
+                OriginLat = 10.0m,
+                OriginLng = 20.0m,
+                DestLat = 30.0m,
+                DestLng = 40.0m
             };
 
             // Act

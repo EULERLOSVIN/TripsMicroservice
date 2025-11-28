@@ -2,6 +2,8 @@
 using Moq;
 using TripsMicroservice.Controllers;
 using TripsMicroservice.Features.Commands;
+using Microsoft.AspNetCore.Mvc;
+using FluentAssertions;
 
 namespace Test.Controller
 {
@@ -25,10 +27,10 @@ namespace Test.Controller
                 PassengerId = 1,
                 OriginAddress = "Origin",
                 DestinationAddress = "Destination",
-                OriginLat = 10.0,
-                OriginLng = 20.0,
-                DestLat = 30.0,
-                DestLng = 40.0
+                OriginLat = 10.0m,
+                OriginLng = 20.0m,
+                DestLat = 30.0m,
+                DestLng = 40.0m
             };
 
             var expectedResponse = new TripResponse
