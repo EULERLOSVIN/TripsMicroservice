@@ -1,16 +1,20 @@
 ﻿using MediatR;
 using TripsMicroservice.Data;
 using TripsMicroservice.Entities;
+using MassTransit;
+using TripsMicroservice.Events;
 
 namespace TripsMicroservice.Features.Commands
 {
     public class CreateTripCommandHandler : IRequestHandler<CreateTripCommand, TripResponse>
     {
         private readonly TripsDbContext _context;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public CreateTripCommandHandler(TripsDbContext context)
+        public CreateTripCommandHandler(TripsDbContext context, IPublishEndpoint publishEndpoint)
         {
             _context = context;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<TripResponse> Handle(CreateTripCommand request, CancellationToken cancellationToken)
@@ -53,6 +57,17 @@ namespace TripsMicroservice.Features.Commands
             _context.Trips.Add(newTrip);
             _context.TripFares.Add(newFare);
             await _context.SaveChangesAsync(cancellationToken);
+
+            // 4.1 PUBLICAR EVENTO
+            await _publishEndpoint.Publish(new TripCreatedEvent
+            {
+                TripId = newTrip.IdTrip,
+                PassengerId = request.PassengerId,
+                OriginAddress = request.OriginAddress,
+                DestinationAddress = request.DestinationAddress,
+                EstimatedFare = total,
+                CreatedAt = DateTime.Now
+            }, cancellationToken);
 
             // 5. RETORNO
             return new TripResponse
