@@ -13,11 +13,16 @@ builder.Services.AddDbContext<TripsDbContext>(options =>
 // Registrar MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-// Registrar MassTransit (InMemory para pruebas)
+// Registrar MassTransit (RabbitMQ)
 builder.Services.AddMassTransit(x =>
 {
-    x.UsingInMemory((context, cfg) =>
+    x.UsingRabbitMq((context, cfg) =>
     {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
         cfg.ConfigureEndpoints(context);
     });
 });
