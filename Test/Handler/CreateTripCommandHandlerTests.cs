@@ -2,12 +2,15 @@
 using TripsMicroservice.Data;
 using TripsMicroservice.Features.Commands;
 using FluentAssertions;
+using Moq;
+using MassTransit;
 
 namespace Test.Handler
 {
     public class CreateTripCommandHandlerTests
     {
         private readonly TripsDbContext _context;
+        private readonly Mock<IPublishEndpoint> _publishEndpointMock;
         private readonly CreateTripCommandHandler _handler;
 
         public CreateTripCommandHandlerTests()
@@ -17,7 +20,8 @@ namespace Test.Handler
                 .Options;
 
             _context = new TripsDbContext(options);
-            _handler = new CreateTripCommandHandler(_context);
+            _publishEndpointMock = new Mock<IPublishEndpoint>();
+            _handler = new CreateTripCommandHandler(_context, _publishEndpointMock.Object);
         }
 
         [Fact]
